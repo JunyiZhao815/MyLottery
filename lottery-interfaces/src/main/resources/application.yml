@@ -1,0 +1,49 @@
+server:
+  port: 8080
+# 多数据源路由配置
+mini-db-router:
+  jdbc:
+    datasource:
+      dbCount: 2
+      tbCount: 4
+      default: db00
+      routerKey: uId
+      list: db01,db02
+      db00:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/lottery?useUnicode=true
+        username: root
+        password: zjY1298892386
+      db01:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/lottery_01?useUnicode=true
+        username: root
+        password: zjY1298892386
+      db02:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://127.0.0.1:3306/lottery_02?useUnicode=true
+        username: root
+        password: zjY1298892386
+
+
+
+
+
+
+mybatis:
+  mapper-locations: classpath:/mybatis/mapper/*.xml
+  config-location:  classpath:/mybatis/config/mybatis-config.xml
+
+# Dubbo 广播方式配置
+dubbo:
+  application:
+    name: MyLottery
+    version: 1.0.0
+  registry:
+    address: multicast://224.5.6.7:1234
+  protocol:
+    name: dubbo
+    port: 20880
+  scan:
+    base-packages: cn.itedus.lottery.rpc
+
