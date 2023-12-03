@@ -13,7 +13,7 @@ import cn.itedus.lottery.rpc.res.ActivityRes;
  * 2. 更新活动
  * 3. 查询活动
  */
-public interface IActivityBooth {
+public interface ILotteryActivityBooth {
 
     ActivityRes queryActivityById(ActivityReq req);
 

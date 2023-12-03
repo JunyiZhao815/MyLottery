@@ -1,12 +1,14 @@
 package cn.itedus.lottery.domain.strategy.model.vo;
 
+import java.util.Date;
+
 /**
  * @description: 中奖奖品信息
  * @author：小傅哥，微信：fustack
  * @date: 2021/8/28
  * @Copyright： 公众号：bugstack虫洞栈 | 博客：https://bugstack.cn - 沉淀、分享、成长，让自己和他人都能有所收获！
  */
-public class DrawAwardInfo {
+public class DrawAwardVO {
 
     /**
      * 奖品ID
@@ -28,10 +30,24 @@ public class DrawAwardInfo {
      */
     private String awardContent;
 
-    public DrawAwardInfo() {
+    /**
+     * 策略方式（1:单项概率、2:总体概率）
+     */
+    private Integer strategyMode;
+
+    /**
+     * 发放奖品方式（1:即时、2:定时[含活动结束]、3:人工）
+     */
+    private Integer grantType;
+    /**
+     * 发奖时间
+     */
+    private Date grantDate;
+
+    public DrawAwardVO() {
     }
 
-    public DrawAwardInfo(String awardId, Integer awardType, String awardName,String awardContent) {
+    public DrawAwardVO(String awardId, Integer awardType, String awardName,String awardContent) {
         this.awardId = awardId;
         this.awardType = awardType;
         this.awardName = awardName;
@@ -68,5 +84,29 @@ public class DrawAwardInfo {
 
     public void setAwardContent(String awardContent) {
         this.awardContent = awardContent;
+    }
+
+    public Integer getStrategyMode() {
+        return strategyMode;
+    }
+
+    public void setStrategyMode(Integer strategyMode) {
+        this.strategyMode = strategyMode;
+    }
+
+    public Integer getGrantType() {
+        return grantType;
+    }
+
+    public void setGrantType(Integer grantType) {
+        this.grantType = grantType;
+    }
+
+    public Date getGrantDate() {
+        return grantDate;
+    }
+
+    public void setGrantDate(Date grantDate) {
+        this.grantDate = grantDate;
     }
 }
