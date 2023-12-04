@@ -29,7 +29,7 @@ public class UserTakeActivityDaoTest {
     private IUserTakeActivityDao userTakeActivityDao;
 
     @Test
-    public void test_insert() {
+    public void test_insert1() {
         UserTakeActivity userTakeActivity = new UserTakeActivity();
         userTakeActivity.setuId("Ukdli109op811d"); // 1库：Ukdli109op89oi 2库：Ukdli109op811d
         userTakeActivity.setTakeId(121019889410L);
@@ -41,5 +41,17 @@ public class UserTakeActivityDaoTest {
 
         userTakeActivityDao.insert(userTakeActivity);
     }
+    @Test
+    public void test_insert2() {
+        UserTakeActivity userTakeActivity = new UserTakeActivity();
+        userTakeActivity.setuId("xiaofuge"); // 1库：Ukdli109op89oi 2库：Ukdli109op811d
+        userTakeActivity.setTakeId(121019889410L);
+        userTakeActivity.setActivityId(100001L);
+        userTakeActivity.setActivityName("测试活动");
+        userTakeActivity.setTakeDate(new Date());
+        userTakeActivity.setTakeCount(10);
+        userTakeActivity.setUuid("Uhdgkw766120d");
 
+        userTakeActivityDao.insert(userTakeActivity);
+    }
 }

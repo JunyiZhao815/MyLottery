@@ -1,16 +1,12 @@
 package cn.itedus.lottery.infrastructure.repository;
 
 import cn.itedus.lottery.common.Constants;
+import cn.itedus.lottery.domain.activity.model.req.PartakeReq;
 import cn.itedus.lottery.domain.activity.model.vo.*;
 import cn.itedus.lottery.domain.activity.repository.IActivityRepository;
-import cn.itedus.lottery.infrastructure.dao.IActivityDao;
-import cn.itedus.lottery.infrastructure.dao.IAwardDao;
-import cn.itedus.lottery.infrastructure.dao.IStrategyDao;
-import cn.itedus.lottery.infrastructure.dao.IStrategyDetailDao;
-import cn.itedus.lottery.infrastructure.po.Activity;
-import cn.itedus.lottery.infrastructure.po.Award;
-import cn.itedus.lottery.infrastructure.po.Strategy;
-import cn.itedus.lottery.infrastructure.po.StrategyDetail;
+import cn.itedus.lottery.infrastructure.dao.*;
+import cn.itedus.lottery.infrastructure.po.*;
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +27,9 @@ public class ActivityRepository implements IActivityRepository {
 
     @Resource
     private IStrategyDetailDao iStrategyDetailDao;
+
+    @Resource
+    private IUserTakeActivityCountDao userTakeActivityCountDao;
     /**
      * 添加活动配置
      *
@@ -101,4 +100,42 @@ public class ActivityRepository implements IActivityRepository {
         int count = iActivityDao.alterState(alterStateVO);
         return count == 1;
     }
+
+
+
+    /**
+     * 查询活动账单信息【库存、状态、日期、个人参与次数】
+     *
+     * @param req 参与活动请求
+     * @return 活动账单
+     */
+    @Override
+    public ActivityBillVO queryActivityBill(PartakeReq req) {
+        Activity activity = iActivityDao.queryActivityById(req.getActivityId());
+
+        UserTakeActivityCount userTakeActivityCountReq = new UserTakeActivityCount();
+        userTakeActivityCountReq.setuId(req.getuId());
+        userTakeActivityCountReq.setActivityId(req.getActivityId());
+        UserTakeActivityCount userTakeActivityCount = userTakeActivityCountDao.queryUserTakeActivityCount(userTakeActivityCountReq);
+        // 封装结果信息
+        ActivityBillVO activityBillVO = new ActivityBillVO();
+        activityBillVO.setuId(req.getuId());
+        activityBillVO.setActivityId(req.getActivityId());
+        activityBillVO.setActivityName(activity.getActivityName());
+        activityBillVO.setBeginDateTime(activity.getBeginDateTime());
+        activityBillVO.setEndDateTime(activity.getEndDateTime());
+        activityBillVO.setTakeCount(activity.getTakeCount());
+        activityBillVO.setStockSurplusCount(activity.getStockSurplusCount());
+        activityBillVO.setStrategyId(activity.getStrategyId());
+        activityBillVO.setState(activity.getState());
+        activityBillVO.setUserTakeLeftCount(null == userTakeActivityCount ? null : userTakeActivityCount.getLeftCount());
+        return activityBillVO;
+    }
+    @Override
+    public int subtractionActivityStock(Long activityId) {
+        return iActivityDao.subtractionActivityStock(activityId);
+    }
+
+
+
 }

@@ -1,7 +1,8 @@
 package cn.itedus.lottery.domain.strategy.model.res;
 
 import cn.itedus.lottery.common.Constants;
-import cn.itedus.lottery.domain.strategy.model.vo.DrawAwardInfo;
+import cn.itedus.lottery.domain.strategy.model.vo.DrawAwardVO;
+import cn.itedus.lottery.domain.strategy.model.vo.DrawAwardVO;
 
 /**
  * @description: 抽奖结果
@@ -29,7 +30,7 @@ public class DrawResult {
     /**
      * 中奖奖品信息
      */
-    private DrawAwardInfo drawAwardInfo;
+    private DrawAwardVO DrawAwardVO;
 
     public DrawResult() {
     }
@@ -40,11 +41,11 @@ public class DrawResult {
         this.drawState = drawState;
     }
 
-    public DrawResult(String uId, Long strategyId, Integer drawState, DrawAwardInfo drawAwardInfo) {
+    public DrawResult(String uId, Long strategyId, Integer drawState, DrawAwardVO DrawAwardVO) {
         this.uId = uId;
         this.strategyId = strategyId;
         this.drawState = drawState;
-        this.drawAwardInfo = drawAwardInfo;
+        this.DrawAwardVO = DrawAwardVO;
     }
 
     public String getuId() {
@@ -71,12 +72,12 @@ public class DrawResult {
         this.drawState = drawState;
     }
 
-    public DrawAwardInfo getDrawAwardInfo() {
-        return drawAwardInfo;
+    public DrawAwardVO getDrawAwardVO() {
+        return DrawAwardVO;
     }
 
-    public void setDrawAwardInfo(DrawAwardInfo drawAwardInfo) {
-        this.drawAwardInfo = drawAwardInfo;
+    public void setDrawAwardVO(DrawAwardVO DrawAwardVO) {
+        this.DrawAwardVO = DrawAwardVO;
     }
 
 }

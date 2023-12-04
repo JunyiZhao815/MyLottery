@@ -26,7 +26,7 @@ public interface IUserTakeActivityCountDao {
      * 插入领取次数信息
      * @param userTakeActivityCount 请求入参
      */
-//    @DBRouter
+    @DBRouter
     void insert(UserTakeActivityCount userTakeActivityCount);
 
     /**

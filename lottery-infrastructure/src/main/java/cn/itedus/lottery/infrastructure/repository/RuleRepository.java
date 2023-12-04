@@ -2,8 +2,8 @@ package cn.itedus.lottery.infrastructure.repository;
 
 import cn.itedus.lottery.common.Constants;
 import cn.itedus.lottery.domain.rule.model.aggregates.TreeRuleRich;
-import cn.itedus.lottery.domain.rule.model.vo.TreeNodeVO;
 import cn.itedus.lottery.domain.rule.model.vo.TreeNodeLineVO;
+import cn.itedus.lottery.domain.rule.model.vo.TreeNodeVO;
 import cn.itedus.lottery.domain.rule.model.vo.TreeRootVO;
 import cn.itedus.lottery.domain.rule.repository.IRuleRepository;
 import cn.itedus.lottery.infrastructure.dao.RuleTreeDao;
@@ -51,14 +51,14 @@ public class RuleRepository implements IRuleRepository {
         Map<Long, TreeNodeVO> treeNodeMap = new HashMap<>();
         List<RuleTreeNode> ruleTreeNodeList = ruleTreeNodeDao.queryRuleTreeNodeList(treeId);
         for (RuleTreeNode treeNode : ruleTreeNodeList) {
-            List<TreeNodeLineVO> treeNodeLineInfoList = new ArrayList<>();
+            List<TreeNodeLineVO> treeNodeLineInfoList = new ArrayList<>(); // to-Node list
             if (Constants.NodeType.STEM.equals(treeNode.getNodeType())) {
 
                 RuleTreeNodeLine ruleTreeNodeLineReq = new RuleTreeNodeLine();
                 ruleTreeNodeLineReq.setTreeId(treeId);
                 ruleTreeNodeLineReq.setNodeIdFrom(treeNode.getId());
                 List<RuleTreeNodeLine> ruleTreeNodeLineList = ruleTreeNodeLineDao.queryRuleTreeNodeLineList(ruleTreeNodeLineReq);
-
+                // query to-Node list based on from-Node and treeId
                 for (RuleTreeNodeLine nodeLine : ruleTreeNodeLineList) {
                     TreeNodeLineVO treeNodeLineInfo = new TreeNodeLineVO();
                     treeNodeLineInfo.setNodeIdFrom(nodeLine.getNodeIdFrom());
@@ -77,7 +77,7 @@ public class RuleRepository implements IRuleRepository {
             treeNodeInfo.setRuleDesc(treeNode.getRuleDesc());
             treeNodeInfo.setTreeNodeLineInfoList(treeNodeLineInfoList);
 
-            treeNodeMap.put(treeNode.getId(), treeNodeInfo);
+            treeNodeMap.put(treeNode.getId(), treeNodeInfo);// key is one Node in tree, value is list of (from-Node to-Node)
         }
 
         TreeRuleRich treeRuleRich = new TreeRuleRich();

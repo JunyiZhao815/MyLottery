@@ -73,7 +73,7 @@ public class ApiTest {
             System.out.println("斐波那契散列：" + idx + " 普通散列：" + (String.valueOf(i).hashCode() & (128 - 1)));
         }
 
-        System.out.println(map);
+
     }
 
     @Test

@@ -1,6 +1,7 @@
 package cn.itedus.lottery.domain.strategy.service.algorithm;
 
-import cn.itedus.lottery.domain.strategy.model.vo.AwardRateInfo;
+import cn.itedus.lottery.domain.strategy.model.vo.AwardRateVO;
+import com.alibaba.fastjson.JSON;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +15,7 @@ public abstract class BaseAlgorithm implements IDrawAlgorithm{
     protected Map<Long, String[]> rateTupleMap = new ConcurrentHashMap<>();
 
     // 奖品区间概率值，strategyId -> [awardId->begin、awardId->end]
-    protected Map<Long, List<AwardRateInfo>> awardRateInfoMap = new ConcurrentHashMap<>();
+    protected Map<Long, List<AwardRateVO>> AwardRateVOMap = new ConcurrentHashMap<>();
 
     /**
      * 程序启动时初始化概率元祖，在初始化完成后使用过程中不允许修改元祖数据
@@ -33,20 +34,20 @@ public abstract class BaseAlgorithm implements IDrawAlgorithm{
      * 5. 当后续通过随机数获取到1-100的值后，可以直接定位到对应的奖品信息，通过这样的方式把轮训算奖的时间复杂度从O(n) 降低到 0(1)
      *
      * @param strategyId        策略ID
-     * @param awardRateInfoList 奖品概率配置集合 「值示例：AwardRateInfo.awardRate = 0.04」
+     * @param AwardRateVOList 奖品概率配置集合 「值示例：AwardRateVO.awardRate = 0.04」
      */
     @Override
-    public void initRateTuple(Long strategyId, List<AwardRateInfo> awardRateInfoList) {
-        awardRateInfoMap.put(strategyId, awardRateInfoList);
+    public void initRateTuple(Long strategyId, List<AwardRateVO> AwardRateVOList) {
+        AwardRateVOMap.put(strategyId, AwardRateVOList);
 
         String[]rateTuple = rateTupleMap.computeIfAbsent(strategyId, k -> new String[RATE_TUPLE_LENGTH]);
 
         int cursorVal = 0;
-        for (AwardRateInfo awardRateInfo: awardRateInfoList){
-            int rateVal = awardRateInfo.getAwardRate().multiply(new BigDecimal(100)).intValue();
+        for (AwardRateVO AwardRateVO: AwardRateVOList){
+            int rateVal = AwardRateVO.getAwardRate().multiply(new BigDecimal(100)).intValue();
 
             for (int i = cursorVal + 1; i <= (rateVal + cursorVal + 1); i++){
-                rateTuple[hashIdx(i)] = awardRateInfo.getAwardId();
+                rateTuple[hashIdx(i)] = AwardRateVO.getAwardId();
             }
             cursorVal += rateVal;
         }
